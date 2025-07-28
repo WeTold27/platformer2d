@@ -5,7 +5,7 @@ import Phaser from "phaser";
 import PlayScene from './scenes/Play';
 import PreloadScene from './scenes/Preload';
 
-const WIDTH = 1200;
+const WIDTH = 1280;
 const HEIGHT = 600;
 
 const SHARED_CONFIG = {
@@ -24,7 +24,7 @@ const config = {
   physics: {
     default: 'arcade',
     arcade: {
-      debug: true,
+      // debug: true,
     }
   },
   scene: initScenes()
