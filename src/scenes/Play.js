@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
 import Player from '../entities/Player';
-import Enemies from '../groups/Enemies'
+import Enemies from '../groups/Enemies';
 
 class Play extends Phaser.Scene {
 
@@ -18,7 +18,8 @@ class Play extends Phaser.Scene {
 
         this.createEnemyColliders(enemies, {
             colliders: {
-                platformsColliders: layers.platformsColliders, player
+                platformsColliders: layers.platformsColliders,
+                player
             }
         });
 
@@ -30,36 +31,8 @@ class Play extends Phaser.Scene {
 
         this.createEndOfLevel(playerZones.end, player);
         this.setupFollowupCameraOn(player);
-
-        this.plotting = false;
-        this.graphics = this.add.graphics();
-        this.line = new Phaser.Geom.Line();
-        this.graphics.lineStyle = (1, 0x00ff00);
-
-        this.input.on('pointerdown', this.startDrawing, this);
-        this.input.on('pointerup', pointer => this.finishDrawing(pointer, layers.platforms), this);
     }
-
-    drawDebug(layer) {
-        const collidingTileColor = new Phaser.Display.Color(243, 134, 48, 200);
-        layer.renderDebug(this.graphics, {
-            tileColor: null,
-            collidingTileColor
-        })
-    }
-
-    startDrawing(pointer) {
-        if (this.tileHits && this.tileHits.length > 0) {
-            this.tileHits.forEach(tile => {
-                tile.index !== -1 && tile.setCollision(false);
-            })
-        }
-        
-        this.line.x1 = pointer.worldX;
-        this.line.y1 = pointer.worldY;
-        this.plotting = true;
-    }
-
+    
     finishDrawing(pointer, layer) {
         this.line.x2 = pointer.worldX;
         this.line.y2 = pointer.worldY;
@@ -71,13 +44,14 @@ class Play extends Phaser.Scene {
 
         if (this.tileHits.length > 0) {
             this.tileHits.forEach(tile => {
-                tile.index !== -1 && tile.setCollision(true);
+                tile.index !== -1 && console.log('I have hit the platform!');
+                tile.index !== -1 && tile.setCollision(true)
             })
         }
-        
+
         this.drawDebug(layer);
 
-        this.this.plotting = false;
+        this.plotting = false;
     }
 
     createMap() {
@@ -92,7 +66,7 @@ class Play extends Phaser.Scene {
         const environment = map.createStaticLayer('environment', tileset);
         const platforms = map.createStaticLayer('platforms', tileset);
         const playerZones = map.getObjectLayer('player_zones');
-        const enemySpawns = map.getObjectLayer('enemy_spawns')
+        const enemySpawns = map.getObjectLayer('enemy_spawns');
 
         platformsColliders.setCollisionByProperty({collides: true});
 
@@ -111,6 +85,7 @@ class Play extends Phaser.Scene {
             const enemy = new enemyTypes[spawnPoint.type](this, spawnPoint.x, spawnPoint.y);
             enemies.add(enemy);
         })
+
         return enemies;
     }
 
@@ -128,8 +103,7 @@ class Play extends Phaser.Scene {
     setupFollowupCameraOn(player) {
         const {height, width, mapOffset, zoomFactor} = this.config;
         this.physics.world.setBounds(0, 0, width + mapOffset, height + 200);
-        this.cameras.main.setBounds(0, 0, width + mapOffset, height)
-            .setZoom(zoomFactor);
+        this.cameras.main.setBounds(0, 0, width + mapOffset, height).setZoom(zoomFactor);
         this.cameras.main.startFollow(player);
     }
 
@@ -137,7 +111,7 @@ class Play extends Phaser.Scene {
         const playerZones = playerZonesLayer.objects;
         return {
             start: playerZones.find(zone => zone.name === 'startZone'),
-            end: playerZones.find(zone => zone.name === 'endZone'),
+            end: playerZones.find(zone => zone.name === 'endZone')
         }
     }
 
@@ -149,18 +123,8 @@ class Play extends Phaser.Scene {
 
         const eolOverlap = this.physics.add.overlap(player, endOfLevel, () => {
             eolOverlap.active = false;
+            console.log('Payer has won!');
         })
-    }
-
-    update() {
-        if (this.plotting) {
-            const pointer = this.input.activePointer;
-
-            this.line.x2 = pointer.worldX;
-            this.line.y2 = pointer.worldY;
-            this.graphics.clear();
-            this.graphics.strokeLineShape(this.line);
-        }
     }
 }
 
