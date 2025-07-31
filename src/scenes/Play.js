@@ -1,7 +1,6 @@
 import Phaser from 'phaser';
 import Player from '../entities/Player';
-// import collidable from "../mixins/collidable";
-import Birdman from '../entities/Birdman';
+import Enemies from '../groups/Enemies'
 
 class Play extends Phaser.Scene {
 
@@ -57,18 +56,20 @@ class Play extends Phaser.Scene {
     }
 
     createEnemies(spawnLayer) {
+        const enemies = new Enemies(this);
+        const enemyTypes = enemies.getTypes();
 
-        return spawnLayer.objects.map(spawnPoint => {
-            return new Birdman(this, spawnPoint.x, spawnPoint.y);
+        spawnLayer.objects.forEach(spawnPoint => {
+            const enemy = new enemyTypes[spawnPoint.type](this, spawnPoint.x, spawnPoint.y);
+            enemies.add(enemy);
         })
+        return enemies;
     }
 
     createEnemyColliders(enemies, {colliders}) {
-        enemies.forEach(enemy => {
-            enemy
-                .addCollider(colliders.platformsColliders)
-                .addCollider(colliders.player);
-        })
+        enemies
+            .addCollider(colliders.platformsColliders)
+            .addCollider(colliders.player);
     }
 
     createPlayerColliders(player, {colliders}) {

@@ -1,30 +1,43 @@
-import Phaser from 'phaser';
+import Enemy from './Enemy';
+import initAnims from './anims/birdmanAnims'
 
-import collidable from '../mixins/collidable';
-
-class Birdman extends Phaser.Physics.Arcade.Sprite {
+class Birdman extends Enemy {
     constructor(scene, x, y) {
         super(scene, x, y, 'birdman');
-
-        scene.add.existing(this);
-        scene.physics.add.existing(this);
-
-        Object.assign(this, collidable);
-
-        this.init();
+        initAnims(scene.anims);
     }
-
-    init() {
-        this.gravity = 500;
-        this.speed = 150;
-
-        this.body.setGravityY(this.gravity);
-        this.setSize(22, 45 );
-        this.setOffset(7, 20)
-        this.setCollideWorldBounds(true);
-        this.setImmovable(true);
-        this.setOrigin(0.5, 1);
+    
+    update(time, delta) {
+        super.update(time, delta);
+        this.play('birdman-idle', true);
     }
+    
+    // shootProjectile() {
+    //    
+    // }
 }
 
 export default Birdman;
+
+// class Snaky extends Enemy {
+//     constructor(scene, x, y) {
+//         super(scene, x, y, 'snaky');
+//     }
+//     superAttack() {
+//        
+//     }
+// }
+//
+// export default Snaky;
+//
+// class Tank extends Enemy {
+//     constructor(scene, x, y) {
+//         super(scene, x, y, 'tank');
+//     }
+//    
+//     defensiveShield() {
+//        
+//     }
+// }
+//
+// export default Tank;
