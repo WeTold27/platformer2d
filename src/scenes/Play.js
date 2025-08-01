@@ -92,11 +92,15 @@ class Play extends Phaser.Scene {
 
         return enemies;
     }
+    
+    onPlayerCollision(enemy, player) {
+        player.takesHit(enemy);
+    }
 
     createEnemyColliders(enemies, {colliders}) {
         enemies
             .addCollider(colliders.platformsColliders)
-            .addCollider(colliders.player);
+            .addCollider(colliders.player, this.onPlayerCollision);
     }
 
     createPlayerColliders(player, {colliders}) {
@@ -127,7 +131,7 @@ class Play extends Phaser.Scene {
 
         const eolOverlap = this.physics.add.overlap(player, endOfLevel, () => {
             eolOverlap.active = false;
-            console.log('Payer has won!');
+            console.log('Player has won!');
         })
     }
 }

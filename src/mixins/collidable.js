@@ -10,7 +10,7 @@ export default {
     bodyPositionDifferenceX: 0,
     prevRay: null,
     prevHasHit: null,
-
+    
     raycast(body, layer, {raylength = 30, precision = 0, steepnes = 1}) {
         const {x, y, width, halfHeight} = body;
 
@@ -25,17 +25,17 @@ export default {
 
         const line = new Phaser.Geom.Line();
         let hasHit = false;
-        
+
         switch (body.facing) {
             case Phaser.Physics.Arcade.FACING_RIGHT: {
-                line.x1 = x + width ;
+                line.x1 = x + width;
                 line.y1 = y + halfHeight;
                 line.x2 = line.x1 + raylength * steepnes;
                 line.y2 = line.y1 + raylength;
                 break;
             }
             case Phaser.Physics.Arcade.FACING_LEFT: {
-                line.x1 = x ;
+                line.x1 = x;
                 line.y1 = y + halfHeight;
                 line.x2 = line.x1 - raylength * steepnes;
                 line.y2 = line.y1 + raylength;

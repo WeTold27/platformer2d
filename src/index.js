@@ -15,6 +15,7 @@ const SHARED_CONFIG = {
   width: WIDTH,
   height: HEIGHT,
   zoomFactor: 1.5,
+  debug: true
 }
 
 const Scenes = [ PreloadScene, PlayScene ];
@@ -28,7 +29,7 @@ const config = {
   physics: {
     default: 'arcade',
     arcade: {
-      debug: true,
+      debug: SHARED_CONFIG.debug,
     }
   },
   scene: initScenes()
