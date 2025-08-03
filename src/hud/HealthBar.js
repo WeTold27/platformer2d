@@ -27,7 +27,7 @@ class HealthBar {
         if (amount <= 0) {
             this.value = 0;
         } else {
-            this.value -= amount;
+            this.value = amount;
         }
         
         this.draw(this.x, this.y, this.scale);

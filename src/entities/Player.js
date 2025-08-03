@@ -132,15 +132,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             hitAnim.stop();
             this.clearTint();
         })
-
-
-        // this.scene.time.addEvent({
-        //     delay: 1000,
-        //     callback: () => {
-        //         this.hasBeenHit = false;
-        //     },
-        //     loop: false
-        // })
+        
     }
 }
 
