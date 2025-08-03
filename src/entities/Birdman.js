@@ -6,38 +6,25 @@ class Birdman extends Enemy {
         super(scene, x, y, 'birdman');
         initAnims(scene.anims);
     }
-    
+
     update(time, delta) {
         super.update(time, delta);
+
+        if (!this.active) {
+            return;
+        }
+
+        if (this.isPlayingAnims('birdman-hurt')) {
+            return;
+        }
+
         this.play('birdman-idle', true);
     }
-    
-    // shootProjectile() {
-    //    
-    // }
+
+    takesHit(source) {
+        super.takesHit(source);
+        this.play('birdman-hurt', true);
+    }
 }
 
 export default Birdman;
-
-// class Snaky extends Enemy {
-//     constructor(scene, x, y) {
-//         super(scene, x, y, 'snaky');
-//     }
-//     superAttack() {
-//        
-//     }
-// }
-//
-// export default Snaky;
-//
-// class Tank extends Enemy {
-//     constructor(scene, x, y) {
-//         super(scene, x, y, 'tank');
-//     }
-//    
-//     defensiveShield() {
-//        
-//     }
-// }
-//
-// export default Tank;
