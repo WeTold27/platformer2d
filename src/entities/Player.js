@@ -2,6 +2,8 @@ import Phaser from 'phaser';
 import HealthBar from "../hud/HealthBar";
 import initAnimations from './anims/playerAnims';
 import collidable from '../mixins/collidable';
+import Projectiles from "../attacks/Projectiles";
+import Projectile from "../attacks/Projectile";
 
 class Player extends Phaser.Physics.Arcade.Sprite {
     constructor(scene, x, y) {
@@ -26,6 +28,9 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.bounceVelocity = 250;
         this.cursors = this.scene.input.keyboard.createCursorKeys();
         
+        this.lastDirection = Phaser.Physics.Arcade.FACING_RIGHT;
+        this.projectiles = new Projectiles(this.scene);
+        
         this.health = 100;
         this.hp = new HealthBar(
             this.scene,
@@ -33,6 +38,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             this.scene.config.leftTopCorner.y + 5,
             2,
             this.health
+            
         )
 
         this.body.setSize(20, 36);
@@ -41,6 +47,10 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.setOrigin(0.5, 1);
 
         initAnimations(this.scene.anims);
+        
+        this.scene.input.keyboard.on('keydown-Q', () => {
+            this.projectiles.fireProjectile(this);
+        })
     }
 
     initEvents() {
@@ -56,9 +66,11 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         const onFloor = this.body.onFloor();
 
         if (left.isDown) {
+            this.lastDirection = Phaser.Physics.Arcade.FACING_LEFT;
             this.setVelocityX(-this.playerSpeed);
             this.setFlipX(true);
         } else if (right.isDown) {
+            this.lastDirection = Phaser.Physics.Arcade.FACING_RIGHT;
             this.setVelocityX(this.playerSpeed);
             this.setFlipX(false);
         } else {
